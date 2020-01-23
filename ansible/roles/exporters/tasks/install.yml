@@ -9,7 +9,7 @@
     src: docker-compose.yml
     dest: /etc/exporters/docker-compose.yml
     mode: 0644
-  notify: reload exporters
+  notify: restart exporters
 
 - name: create systemd service unit
   template:
