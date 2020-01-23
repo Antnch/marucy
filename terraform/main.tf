@@ -109,15 +109,15 @@ resource "aws_instance" "monitoring" {
   }
 }
 
-output "db_instance_ip" {
+output "db_instance" {
   description = "[db_instance]"
   value = aws_instance.db_instance.public_ip
 }
-output "db_data_ip" {
+output "db_data" {
   description = "[db_data]"
   value = aws_instance.db_data.public_ip
 }
-output "monitoring_ip" {
+output "monitoring" {
   description = "[monitoring]"
   value = aws_instance.monitoring.public_ip
 }
