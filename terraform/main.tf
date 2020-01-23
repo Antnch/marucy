@@ -2,6 +2,8 @@
 provider "aws" {
   region  = "eu-west-1"
   version = "2.45.0"
+  aws_access_key = var.aws_access_key
+  aws_secret_key = var.aws_secret_key
 }
 
 //OS for instances

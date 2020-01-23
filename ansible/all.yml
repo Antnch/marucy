@@ -1,4 +1,5 @@
 ---
+- import_playbook: python.yml
 - import_playbook: postgresql.yml
 - import_playbook: base.yml
 - import_playbook: restore.yml

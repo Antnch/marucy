@@ -1,0 +1,6 @@
+---
+- name: Update packages
+  raw: apt update
+
+- name: Install python
+  raw: apt install -y python

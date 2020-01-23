@@ -1,0 +1,10 @@
+---
+- name: install python
+
+  hosts: all
+  user: ubuntu
+  become: yes
+  become_user: root
+
+  roles:
+    - python
