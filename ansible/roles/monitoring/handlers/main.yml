@@ -1,0 +1,6 @@
+---
+- name: restart monitoring
+  systemd:
+    daemon_reload: true
+    name: monitoring
+    state: restarted

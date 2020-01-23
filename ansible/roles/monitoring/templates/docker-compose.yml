@@ -1,0 +1,39 @@
+---
+version: '3.7'
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.15.2
+    volumes:
+      - /etc/monitoring/:/etc/prometheus/
+      - /var/lib/prometheus/:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - 9090:9090
+  #    links:
+  #      - cadvisor:cadvisor
+  #      - alertmanager:alertmanager
+  #    depends_on:
+  #      - cadvisor
+  #    networks:
+  #      - back-tier
+  #    restart: always
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:6.5.3
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+      - /etc/monitoring/grafana-provisioning:/etc/grafana/provisioning
+#      env_file:
+#        - ./grafana/config.monitoring
+#      networks:
+#        - back-tier
+#        - front-tier
+#      restart: always

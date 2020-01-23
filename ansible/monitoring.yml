@@ -1,0 +1,10 @@
+---
+- name: install monitoring
+
+  hosts: monitoring
+  user: ubuntu
+  become: yes
+  become_user: root
+
+  roles:
+    - monitoring

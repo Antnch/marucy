@@ -1,0 +1,24 @@
+---
+- name: Install docker dependencies
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    update_cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Add docker repository key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+
+- name: Add docker repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install docker-ce
+  apt:
+    name: docker-ce
+  ignore_errors: "{{ ansible_check_mode }}"

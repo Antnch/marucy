@@ -1,0 +1,35 @@
+---
+- name: create monitoring configuration directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /etc/monitoring
+    - /etc/monitoring/grafana-provisioning/datasources/
+    - /etc/monitoring/grafana-provisioning/dashboards/
+    - /etc/monitoring/grafana-provisioning/marucy/
+
+- name: create prometheus data directory
+  file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: nobody
+
+- name: create grafana data directory
+  file:
+    path: /var/lib/grafana
+    state: directory
+    owner: 472
+
+- name: create docker-compose config
+  template:
+    src: docker-compose.yml
+    dest: /etc/monitoring/docker-compose.yml
+    mode: 0644
+  notify: restart monitoring
+
+- name: create systemd service unit
+  template:
+    src: monitoring.service
+    dest: /etc/systemd/system/monitoring.service
+  notify: restart monitoring

@@ -1,0 +1,16 @@
+---
+- name: copy dump
+  copy:
+    src: "{{ dump_path }}"
+    dest: "{{ dest_path }}"
+
+- name: Restore a single schema
+  postgresql_db:
+    name: postgres
+    state: restore
+    login_password: changeme
+    owner: postgres
+    target: "{{ dest_path }}"
+    target_opts: "-n public"
+
+#https://docs.ansible.com/ansible/latest/modules/postgresql_db_module.html

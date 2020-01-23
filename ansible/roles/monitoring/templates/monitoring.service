@@ -1,0 +1,15 @@
+[Unit]
+Description=Monitoring
+After=docker.service network-online.target
+Requires=docker.service network-online.target
+
+[Service]
+Type=simple
+
+ExecStart=/usr/local/bin/docker-compose \
+    --file /etc/monitoring/docker-compose.yml \
+    up \
+    --remove-orphans
+
+[Install]
+WantedBy=multi-user.target

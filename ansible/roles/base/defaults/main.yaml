@@ -1,0 +1,2 @@
+---
+scenario_path: "{{ playbook_dir }}/data/test.replay.gz"

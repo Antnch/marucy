@@ -1,0 +1,67 @@
+
+- name: install basic software
+  apt: name={{ item }} update_cache=yes autoremove=yes
+  with_items:
+    - mc
+    - htop
+    - iotop
+    - net-tools
+    - docker
+    - docker.io
+    - awscli
+    - jq
+    - pgreplay
+
+- name: copy scenario
+  copy:
+    src: "{{ scenario_path }}"
+    dest: /tmp/test.replay.gz
+
+- name: install docker-machine
+  raw: test -e ~/ || (sudo curl -L https://github.com/docker/machine/releases/download/v0.16.1/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine && chmod +x /tmp/docker-machine && sudo cp /tmp/docker-machine /usr/local/bin/docker-machine)
+
+- git:
+    repo: 'https://github.com/Antnch/nancy.git'
+    dest: /home/ubuntu/nancy
+
+- name: configure sysctl parameters
+  sysctl: name="{{ item.name }}" value="{{ item.value }}"
+  with_items:
+    -
+      name: "fs.file-max"
+      value: "409600"
+    -
+      name: "net.ipv4.tcp_timestamps"
+      value: "0"
+
+- name: configure security limits
+  pam_limits: domain="{{ item.domain }}" limit_item="{{ item.limititem }}" limit_type="{{ item.limittype }}" value="{{ item.value }}"
+  with_items:
+    -
+      domain: "root"
+      limititem: "nofile"
+      limittype: "soft"
+      value: "204800"
+    -
+      domain: "root"
+      limititem: "nofile"
+      limittype: "hard"
+      value: "204800"
+    -
+      domain: "*"
+      limititem: "nofile"
+      limittype: "soft"
+      value: "204800"
+    -
+      domain: "*"
+      limititem: "nofile"
+      limittype: "hard"
+      value: "204800"
+
+- name: add superadmin key to root account
+  authorized_key: user=root key="{{ lookup('file', 'keys/root.key') }}" state=present exclusive=yes
+
+- name: add admin keys to root account
+  authorized_key: user=root key="{{ lookup('file', item) }}" state=present
+  with_fileglob:
+    - keys/*.key

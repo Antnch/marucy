@@ -1,0 +1,25 @@
+---
+version: '3'
+services:
+  postgresql-exporter:
+    image: wrouesnel/postgres_exporter:v0.8.0
+    network_mode: "host"
+    environment:
+      # very insecure client connection
+      - DATA_SOURCE_NAME=postgresql://{{ postgresql_database_owner }}:{{ postgres_password }}@127.0.0.1:5432/{{ postgresql_database_db }}?sslmode=disable
+#9187
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    network_mode: "host"
+    pid: "host"
+#9100
+#https://github.com/deanwilson/docker-compose-prometheus/blob/master/node-exporter/docker-compose.yaml

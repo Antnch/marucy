@@ -1,0 +1,9 @@
+---
+- import_tasks: install.yml
+
+- name: ensure exporters service is started and enabled
+  systemd:
+    daemon_reload: true
+    name: exporters
+    state: started
+    enabled: true

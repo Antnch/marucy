@@ -1,0 +1,10 @@
+---
+- name: install postgresql to target server
+
+  hosts: db_data
+  user: ubuntu
+  become: yes
+  become_user: root
+
+  roles:
+    - postgresql

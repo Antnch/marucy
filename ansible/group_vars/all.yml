@@ -1,0 +1,6 @@
+---
+postgresql_version: 11
+postgres_password: changeme
+postgresql_database_db: workshop
+postgresql_database_owner: postgres
+

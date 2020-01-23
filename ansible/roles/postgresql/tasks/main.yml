@@ -1,0 +1,60 @@
+---
+- name: update software packages
+  apt: update_cache=yes upgrade=yes autoremove=yes
+
+- name: "Install python-pip"
+  apt:
+    name:
+      - python-pip
+      - python3-pip
+      - python-dev
+      - libpq-dev
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: "Pip install psycopg2"
+  pip:
+    name: psycopg2
+    executable: "{{ item }}"
+  loop:
+    - pip
+    - pip3
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- import_tasks: install.yml
+
+- name: "Update sysctl"
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: true
+  with_items:
+    - name: net.core.somaxconn
+      value: 256
+    - name: net.ipv4.tcp_fin_timeout
+      value: 30
+    - name: kernel.shmmax
+      value: 21474836480
+    - name: kernel.shmall
+      value: 1048576
+
+- name: "Copy postgresql configs"
+  template:
+    src: conf/{{ item }}
+    dest: /etc/postgresql/{{ postgresql_version }}/main/{{ item }}
+    owner: postgres
+    group: postgres
+    mode: 0600
+    backup: true
+  with_items:
+    - postgresql.conf
+    - pg_hba.conf
+  notify: restart postgresql
+
+- name: start postgresql
+  service:
+    name: postgresql
+    enabled: true
+    state: started
+
+- import_tasks: configure.yml
+  ignore_errors: "{{ ansible_check_mode }}"

@@ -1,0 +1,21 @@
+---
+- name: check docker-compose binary exists
+  stat:
+    path: /usr/local/bin/docker-compose
+  register: docker_compose_stat
+
+- name: check docker-compose version
+  command: docker-compose version
+  changed_when: false
+  when: docker_compose_stat.stat.exists
+  register: docker_compose_version_out
+
+# https://docs.docker.com/compose/install/
+- name: install docker-compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    dest: /usr/local/bin/docker-compose
+    checksum: "sha256:{{ docker_compose_checksum_sha256 }}"
+    mode: 0755
+    force: true
+  when: not docker_compose_stat.stat.exists or (docker_compose_version_out.stdout is defined and docker_compose_version_out.stdout.find('docker-compose version ' + docker_compose_version) == -1)

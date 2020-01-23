@@ -1,0 +1,15 @@
+---
+- name: "Setup postgres password"
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: postgres
+    password: '{{ postgres_password }}'
+
+
+#- name: "Create postgresql dbs"
+#  become: true
+#  become_user: postgres
+#  postgresql_db:
+#    name: '{{ postgresql_database_db }}'
+#    owner: '{{ postgresql_database_owner }}'

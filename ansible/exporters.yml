@@ -1,0 +1,10 @@
+---
+- name: install monitoring
+
+  hosts: db_data
+  user: ubuntu
+  become: yes
+  become_user: root
+
+  roles:
+    - exporters

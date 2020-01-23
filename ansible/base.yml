@@ -1,0 +1,10 @@
+---
+- name: install base tools to target server
+
+  hosts: db_instance
+  user: ubuntu
+  become: yes
+  become_user: root
+
+  roles:
+    - base

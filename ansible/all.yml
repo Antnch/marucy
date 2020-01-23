@@ -1,0 +1,6 @@
+---
+- import_playbook: postgresql.yml
+- import_playbook: base.yml
+- import_playbook: restore.yml
+- import_playbook: exporters.yml
+- import_playbook: monitoring.yml

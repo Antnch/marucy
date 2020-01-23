@@ -1,0 +1,6 @@
+---
+# https://docs.docker.com/compose/install/#install-compose
+# https://github.com/docker/compose/releases
+docker_compose_version: 1.24.1
+# curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64 | sha256sum
+docker_compose_checksum_sha256: cfb3439956216b1248308141f7193776fcf4b9c9b49cbbe2fb07885678e2bb8a./

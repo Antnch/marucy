@@ -1,0 +1,39 @@
+---
+- import_tasks: install.yml
+
+- name: copy prometheus.yml
+  template:
+    src: "prometheus.yml"
+    dest: "/etc/monitoring/prometheus.yml"
+
+- name: copy datasources.yml
+  copy:
+    src: "{{ playbook_dir }}/roles/monitoring/config/datasources.yml"
+    dest: "/etc/monitoring/grafana-provisioning/datasources/datasources.yml"
+
+- name: copy dashboards.yml
+  copy:
+    src: "{{ playbook_dir }}/roles/monitoring/config/dashboards.yml"
+    dest: "/etc/monitoring/grafana-provisioning/dashboards/dashboards.yml"
+
+- name: copy postgres.json
+  copy:
+    src: "{{ playbook_dir }}/roles/monitoring/dashboards/postgres.json"
+    dest: "/etc/monitoring/grafana-provisioning/marucy/postgres.json"
+
+- name: copy postgresql.json
+  copy:
+    src: "{{ playbook_dir }}/roles/monitoring/dashboards/postgresql.json"
+    dest: "/etc/monitoring/grafana-provisioning/marucy/postgresql.json"
+
+- name: copy system_overview.json
+  copy:
+    src: "{{ playbook_dir }}/roles/monitoring/dashboards/system_overview.json"
+    dest: "/etc/monitoring/grafana-provisioning/marucy/system_overview.json"
+
+- name: ensure monitoring service is started and enabled
+  systemd:
+    daemon_reload: true
+    name: monitoring
+    state: started
+    enabled: true
