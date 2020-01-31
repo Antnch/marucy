@@ -5,14 +5,14 @@ Marucy is a tool for postgres testing from Miro
 
 Author: Necheukhin Anton
 
-###0. Install ansible and terraform (last versions)
+##0. Install ansible and terraform (last versions)
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)<br/>
 - [Terraform](https://www.terraform.io/downloads.html)<br/>
 - Generate  ssh-key if you do not have it: ```ssh-keygen```<br/>
 _The key will be placed in the directory: ```~/.ssh```_<br/>
 _The file with the private key must be limited in access: ```chmod 400 ~/.ssh/id_rsa```_<br/>
 
-###1. Scenario creating 
+##1. Scenario creating 
 
 1.Create dumpall of database, which will be used to record scenario:
 
@@ -60,7 +60,8 @@ _*path ```/logs/pg_log``` can be placed on a separate disc if it’s necessary_
 4.Initialize a working directory containing Terraform configuration files: ```terraform init```<br/>
 5.Check terraform plan: ```terraform plan```<br/>
 6.Create instances and setup network: ```terraform apply```<br/>
-###3. Instances configuring
+
+##3. Instances configuring
 You can install all by single command: ```ansible-playbook all.yml -i hosts.tpl```<br/>
 Total duration ~ 9m<br/>
 
@@ -80,7 +81,7 @@ _duration ~ 1m 16s_ <br/>
 _duration ~  2m 5s_<br/>
 
 
-###4. Launch scenario
+##4. Launch scenario
 1.Move to db_instance by ssh: ```ssh root@"{{ db_instance_IP }}"```<br/>
 2.Move to ```/tmp``` directory<br/>
 3.Extract test.replay.gz: ```tar -xvf test.replay.gz```<br/>
