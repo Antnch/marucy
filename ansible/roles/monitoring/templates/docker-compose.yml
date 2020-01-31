@@ -12,14 +12,6 @@ services:
       - '--storage.tsdb.path=/prometheus'
     ports:
       - 9090:9090
-  #    links:
-  #      - cadvisor:cadvisor
-  #      - alertmanager:alertmanager
-  #    depends_on:
-  #      - cadvisor
-  #    networks:
-  #      - back-tier
-  #    restart: always
 
   grafana:
     container_name: grafana
@@ -31,9 +23,3 @@ services:
     volumes:
       - /var/lib/grafana:/var/lib/grafana
       - /etc/monitoring/grafana-provisioning:/etc/grafana/provisioning
-#      env_file:
-#        - ./grafana/config.monitoring
-#      networks:
-#        - back-tier
-#        - front-tier
-#      restart: always
