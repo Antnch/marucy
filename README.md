@@ -62,22 +62,24 @@ _*path ```/logs/pg_log``` can be placed on a separate disc if it’s necessary_
 6.Create instances and setup network: ```terraform apply```<br/>
 
 ## 3. Instances configuring
+
+Copy public IP of created instances to ```marucy/ansible/hosts.tpl```<br/>
+
 You can install all by single command: ```ansible-playbook all.yml -i hosts.tpl```<br/>
 Total duration ~ 9m<br/>
 
 Or parts:<br/>
 1.Move to ```marucy/ansible``` directory<br/>
-2.Copy public IP of created instances to ```marucy/ansible/hosts.tpl```<br/>
-3.Install postgres: ```ansible-playbook postgresql.yml -i hosts.tpl```<br/>
+2.Install postgres: ```ansible-playbook postgresql.yml -i hosts.tpl```<br/>
 authentication data: ```marucy/ansible/group_vars/all.yml```<br/>
 _duration ~ 3m 48s_<br/>
-4.Install tool for launch test: ```ansible-playbook base.yml -i hosts.tpl```<br/>
+3.Install tool for launch test: ```ansible-playbook base.yml -i hosts.tpl```<br/>
 _duration ~  1m 24 s_ <br/>
-5.Restore database for test: ```ansible-playbook restore.yml -i hosts.tpl```<br/>
+4.Restore database for test: ```ansible-playbook restore.yml -i hosts.tpl```<br/>
 _duration ~ 10s_ <br/>
-6.Install exporters to collect metrics: ```ansible-playbook exporters.yml -i hosts.tpl```<br/>
+5.Install exporters to collect metrics: ```ansible-playbook exporters.yml -i hosts.tpl```<br/>
 _duration ~ 1m 16s_ <br/>
-7.Install prometheus and grafana: ```ansible-playbook monitoring.yml -i hosts.tpl```<br/>
+6.Install prometheus and grafana: ```ansible-playbook monitoring.yml -i hosts.tpl```<br/>
 _duration ~  2m 5s_<br/>
 
 
