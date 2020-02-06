@@ -5,15 +5,14 @@ Marucy is a tool for postgres testing from Miro
 
 Author: Necheukhin Anton
 
-###0. Install ansible and terraform (last versions)
+## 0. Install ansible and terraform (last versions)
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)<br/>
 - [Terraform](https://www.terraform.io/downloads.html)<br/>
 - Generate  ssh-key if you do not have it: ```ssh-keygen```<br/>
 _The key will be placed in the directory: ```~/.ssh```_<br/>
 _The file with the private key must be limited in access: ```chmod 400 ~/.ssh/id_rsa```_<br/>
 
-###1. Scenario creating 
-
+## 1. Scenario creating 
 1.Create dumpall of database, which will be used to record scenario:
 
 ```su postgres```<br/>
@@ -53,34 +52,38 @@ _*path ```/logs/pg_log``` can be placed on a separate disc if it’s necessary_
 ```pgreplay -f -c -o /logs/pg_log/test.replay.csv /logs/pg_log/test.replay```
 
 -> test.replay is a scenario
-###2. Instances creating
+
+### 2. Instances creating
 1.Download marucy: ```git clone https://github.com/Antnch/marucy.git```<br/>
 2.Move to ```marucy/terraform``` directory<br/>
 3.Add keys to ```marucy/terraform/variables.tf```: ```aws_access_key```, ```aws_secret_key```, ```ssh_key```<br/>
 4.Initialize a working directory containing Terraform configuration files: ```terraform init```<br/>
 5.Check terraform plan: ```terraform plan```<br/>
 6.Create instances and setup network: ```terraform apply```<br/>
-###3. Instances configuring
+
+## 3. Instances configuring
+
+Copy public IP of created instances to ```marucy/ansible/hosts.tpl```<br/>
+
 You can install all by single command: ```ansible-playbook all.yml -i hosts.tpl```<br/>
 Total duration ~ 9m<br/>
 
 Or parts:<br/>
 1.Move to ```marucy/ansible``` directory<br/>
-2.Copy public IP of created instances to ```marucy/ansible/hosts.tpl```<br/>
-3.Install postgres: ```ansible-playbook postgresql.yml -i hosts.tpl```<br/>
+2.Install postgres: ```ansible-playbook postgresql.yml -i hosts.tpl```<br/>
 authentication data: ```marucy/ansible/group_vars/all.yml```<br/>
 _duration ~ 3m 48s_<br/>
-4.Install tool for launch test: ```ansible-playbook base.yml -i hosts.tpl```<br/>
+3.Install tool for launch test: ```ansible-playbook base.yml -i hosts.tpl```<br/>
 _duration ~  1m 24 s_ <br/>
-5.Restore database for test: ```ansible-playbook restore.yml -i hosts.tpl```<br/>
+4.Restore database for test: ```ansible-playbook restore.yml -i hosts.tpl```<br/>
 _duration ~ 10s_ <br/>
-6.Install exporters to collect metrics: ```ansible-playbook exporters.yml -i hosts.tpl```<br/>
+5.Install exporters to collect metrics: ```ansible-playbook exporters.yml -i hosts.tpl```<br/>
 _duration ~ 1m 16s_ <br/>
-7.Install prometheus and grafana: ```ansible-playbook monitoring.yml -i hosts.tpl```<br/>
+6.Install prometheus and grafana: ```ansible-playbook monitoring.yml -i hosts.tpl```<br/>
 _duration ~  2m 5s_<br/>
 
 
-###4. Launch scenario
+## 4. Launch scenario
 1.Move to db_instance by ssh: ```ssh root@"{{ db_instance_IP }}"```<br/>
 2.Move to ```/tmp``` directory<br/>
 3.Extract test.replay.gz: ```tar -xvf test.replay.gz```<br/>
