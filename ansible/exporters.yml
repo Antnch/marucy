@@ -1,7 +1,7 @@
 ---
 - name: install monitoring
 
-  hosts: db_data
+  hosts: db_instance:db_data
   user: ubuntu
   become: yes
   become_user: root
